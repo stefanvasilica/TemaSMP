@@ -38,7 +38,7 @@ PRINT 'Salut, '
 MOV AX, CX
 CALL print_string
 PRINTN '. Acum iti voi desena '
-PRINTN 'o casuta si un brad.'
+PRINTN 'o casuta.'
 
 DEFINE_PRINT_STRING
 DEFINE_PRINT_NUM
@@ -50,19 +50,26 @@ DEFINE_GET_STRING
 
 ; linie orizontala acoperis
 mov cx,130  ; start: column:130
-mov dx,75   ; row=75
-hseT: ;house set 
+mov dx,75   ; row=75 
+
 ;sunet:
     mov al, 7
     mov ah, 0eh 
     int 10h
-;sfarsit sunet	 
+;sfarsit sunet
+
+hseT: ;house set 
     mov ah,0ch  ; ah=0ch pentru a desena o linie
     mov al,08h  ; color:=dar gray(albastru)
     int 10h     ; intrerupe pentru a 
     inc cx      ; incrementa pozitia orizontala
     cmp cx,216  ; deseneaza linie pana la 216
     jnz hseT
+;sunet:
+    mov al, 7
+    mov ah, 0eh 
+    int 10h
+;sfarsit sunet
 
 ; linie orizontala jos
 mov cx,130
@@ -74,6 +81,11 @@ hseB:
     inc cx
     cmp cx,216
     jnz hseB
+;sunet:
+    mov al, 7
+    mov ah, 0eh 
+    int 10h
+;sfarsit sunet
 
 ; linie verticala stanga
 mov cx,130
@@ -85,6 +97,11 @@ hseL:
     inc dx
     cmp dx,125
     jnz hseL
+;sunet:
+    mov al, 7
+    mov ah, 0eh 
+    int 10h
+;sfarsit sunet
 
 ; linie verticala dreapta
 mov cx,216
@@ -96,6 +113,11 @@ hseR:
     inc dx
     cmp dx,126
     jnz hseR
+;sunet:
+    mov al, 7
+    mov ah, 0eh 
+    int 10h
+;sfarsit sunet
 
 ; linie acoperis stanga
 mov cx,130
@@ -109,6 +131,11 @@ hseLR:
     cmp cx,173
     cmp dx,32
     jnz hseLR
+;sunet:
+    mov al, 7
+    mov ah, 0eh 
+    int 10h
+;sfarsit sunet
 
 ; linie acoperis dreapta
 mov cx,173
@@ -122,6 +149,12 @@ hseRR:
     cmp cx,216
     cmp dx,75
     jnz hseRR    
+;sunet:
+    mov al, 7
+    mov ah, 0eh 
+    int 10h
+;sfarsit sunet
+
     
     ; sfarsit desenare casa
     ;__________________________________________________
@@ -132,7 +165,7 @@ mov cx,164
 mov dx,125
 hseLD: 
     mov ah,0ch
-    mov al,01h ;color: blue
+    mov al,0eh ;color: blue
     int 10h
     dec dx
     cmp dx,100
@@ -143,7 +176,7 @@ mov cx,182
 mov dx,125
 hseRD: 
     mov ah,0ch
-    mov al,01h
+    mov al,0eh
     int 10h
     dec dx
     cmp dx,100
@@ -154,7 +187,7 @@ mov cx,164
 mov dx,100
 hseTD: 
     mov ah,0ch
-    mov al,01h
+    mov al,0eh
     int 10h
     inc cx
     cmp cx,183
@@ -291,86 +324,5 @@ hseWH3b:    ;dreapta
     ; casa completa
     ;______________________________________________
 
-    ; start desenare copac
+   
 
-; trunchiul copacului - partea inferioara
-mov cx, 40 
-mov dx, 135
-treLTT:
-    mov ah, 0ch
-    mov al,06h
-    int 10h
-    inc cx
-    cmp cx, 86
-    jnz treLTT
-; baza stanga
-mov cx,40
-mov dx,135
-treLTB: 
-    mov ah,0ch
-    mov al,06h ; color:brown (maro)
-    int 10h
-    inc cx
-    dec dx
-    cmp cx,55
-    cmp dx,120
-    jnz treLTB
-; baza dreapta
-mov cx,86
-mov dx,135
-treRTB: 
-    mov ah,0ch
-    mov al,06h
-    int 10h
-    dec cx
-    dec dx
-    cmp cx,71
-    cmp dx,120
-    jnz treRTB
-; trunchi stanga
-mov cx,55
-mov dx,120
-treLTV: 
-    mov ah,0ch
-    mov al,06h
-    int 10h
-    dec dx
-    cmp dx,80
-    jnz treLTV
-; trunchi dreapta 
-mov cx,71
-mov dx,120
-treRTV: 
-    mov ah,0ch
-    mov al,06h
-    int 10h
-    dec dx
-    cmp dx,80
-    jnz treRTV
-; desenare frunze
-mov dx,80
-mov bx,101
-
-DrwTree:    ;deseneaza un copac cu conuri cu 3
-            ;comenzi jump nested
-mov cx,126
-sub cx,bx ;pastreaza frunzele simetrice
-
-GrTree: 
-    mov ah,0ch
-    mov al,02h ;pixels=green (verde)
-    int 10h
-    inc cx
-    cmp cx,bx
-    jnz GrTree
-    cmp bx,65 ;cand bx ajunge la a
-    jle break ;loop
-
-sub dx,3 ;muta linia verde sus
-sub bx,2 ;micsoreaza coroana copacului la fiecare identare
-
-jmp DrwTree
-
-break:
-   ;sfarsit desenare copac
-   ;________________________________________________
